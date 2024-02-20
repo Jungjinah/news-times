@@ -30,7 +30,14 @@ for (let i=0; i < 20; i++) {
 //async과 await 함수를 쓰면서 pending이 사라짐!
 let news = [];
 const getNews = async() => {
-    const url = new URL(`https://newsapi.org/v2/top-headlines?country=us&apiKey=${API_KEY}`);
+    // noona newsAPI (API KEY X)
+    let q = "";
+    let page = 1;
+    let pageSize = 20;
+    let category = "technology";
+    const url = new URL(`https://jina-news-times.netlify.app/top-headlines?country=kr`);
+    
+    // const url = new URL(`https://newsapi.org/v2/top-headlines?country=us&apiKey=${API_KEY}`);
     const response = await fetch(url);
     const data = await response.json();   //json : 파일형식 (객체처럼 생긴 텍스트) ex)이미지 : jpeg,jpg ...
     news = data.articles;
