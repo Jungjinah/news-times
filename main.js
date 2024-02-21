@@ -58,21 +58,21 @@ const render = () => {
     //이번엔 es6 사용~
     const newsHTML = newsList.map(news => `<div class="row news">   <!-- class="row" -> 부트스트랩에서 한줄로 정렬해줌 -->
         <div class="col-lg-4">
-            <img class="news-img-size" src="${news.urlToImage}"/>
+            <img class="news-img-size" src="${news.urlToImage}" onerror="this.src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJtl9ESKRo5HZYiroYXDvviVXOJoemv-q-brJeHTXsf_ed3lIejzMxBmRibg&s"/>
         </div>
         <div class="col-lg-8">
             <h2>
-                ${news.title}
+                ${news.title ? news.title : '제목없음'}
             </h2>
             <p>
-                ${news.description}
+                ${news.description ? news.description : '내용없음'}
             </p>
             <div>
-                ${news.source.name} * ${news.publishedAt}
+                ${news.source.name ? news.source.name : 'no source'} * ${moment(news.publishedAt, "YYYYMMDD").fromNow()};
             </div>
         </div>
     </div>`
-    );
+    ).join("");
     document.getElementById("news-board").innerHTML = newsHTML; //1. 반복해서 나오는 구문을 감싸고 있는 main-board를 갖고온다.
 }
 
