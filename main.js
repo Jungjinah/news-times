@@ -23,13 +23,12 @@ async function getNews() {
 
     render();
 };
-*/
 
 getNews();
 for (let i=0; i < 20; i++) {
     console.log("after", i);
 }
-
+*/
 
 ///////////////////////////////////////////////////////////////////
 
@@ -46,6 +45,8 @@ const getNews = async() => {
     const response = await fetch(url);
     const data = await response.json();   //json : 파일형식 (객체처럼 생긴 텍스트) ex)이미지 : jpeg,jpg ...
     newsList = data.articles;
+    
+    console.log("Ddd", newsList);
 
     render();
 };
