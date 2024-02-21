@@ -1,0 +1,38 @@
+.headline {
+    margin-top: 1em;
+    display: flex;
+    justify-content: center;
+}
+
+.headline svg {
+    width: 430px;
+}
+
+.menus {
+    margin-top: 1em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    border-top: 1px solid #ebebeb;
+    border-bottom: 4px double black;
+}
+
+.menus button {
+    border: none;
+    background: none;
+    margin: 5px;
+}
+
+.menus button:hover {
+    background-color: #FFFFC5;
+}
+
+.news-img-size {
+    max-width: 100%; /* 이미지의 최대사이즈 (100%) : 부모 넓이의 size */
+    max-height: 250px;
+}
+
+.news {
+    border-bottom: 2px solid black;
+    padding: 1.5em;
+}
