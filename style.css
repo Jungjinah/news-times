@@ -100,13 +100,3 @@
     padding: 8px 9px 9px;
     margin-top: 5px;
 }
-
-@mixin alert-variant($background, $border, $color) {
-    color: $color;
-    @include gradient-bg($background);
-    border-color: $border;
-  
-    .alert-link {
-      color: shade-color($color, 20%);
-    }
-  }
