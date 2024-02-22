@@ -70,21 +70,6 @@ const getNewsByCategory = async (event) =>  {
     render();
 }
 
-//키워드 검색
-const getNewsByKeyword = async() => {
-    const keyword = document.getElementById("search-input").value;
-
-    const url = new URL(`https://jina-news-times.netlify.app/top-headlines?q=${keyword}&country=kr`);
-    // const url = new URL(`https://newsapi.org/v2/top-headlines?country=kr&category=${category}&apiKey=${API_KEY}`);
-
-    const response = await fetch(url);
-    const data = await response.json();
-
-    newsList = data.articles;
-    render();
-}
-
-
 //뉴스 촤라락 보여주기
 const render = () => {
     //todoList는 for문을 사용해서 만듬
@@ -142,10 +127,22 @@ const openSearchBox = () => {
     }
 }
 
-//news api 가져오기
-getNews();
-
-
 //1. 버튼에 클릭이벤트
 //2. 카테고리별 뉴스 가져오기
 //3. 뉴스 보여주기
+//***키워드 검색
+const getNewsByKeyword = async() => {
+    const keyword = document.getElementById("search-input").value;
+
+    const url = new URL(`https://jina-news-times.netlify.app/top-headlines?q=${keyword}&country=kr`);
+    // const url = new URL(`https://newsapi.org/v2/top-headlines?country=kr&category=${category}&apiKey=${API_KEY}`);
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    newsList = data.articles;
+    render();
+}
+
+//news api 가져오기
+getNews();
