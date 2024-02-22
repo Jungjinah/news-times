@@ -35,6 +35,10 @@ for (let i=0; i < 20; i++) {
 //noo-na Code
 //async과 await 함수를 쓰면서 pending이 사라짐!
 let newsList = [];
+const menus = document.querySelectorAll(".menus button");
+menus.forEach(menu => menu.addEventListener("click", (event) => getNewsByCategory(event)))
+
+
 const getNews = async() => {
     // noona newsAPI (API KEY X)
     let q = "";
@@ -42,6 +46,7 @@ const getNews = async() => {
     let pageSize = 20;
     let category = "technology";
     const url = new URL(`https://jina-news-times.netlify.app/top-headlines?country=kr`);
+    // const url = new URL(`https://newsapi.org/v2/top-headlines?country=kr&apiKey=${API_KEY}`);
     const response = await fetch(url);
     const data = await response.json();   //json : 파일형식 (객체처럼 생긴 텍스트) ex)이미지 : jpeg,jpg ...
     newsList = data.articles;
@@ -50,6 +55,34 @@ const getNews = async() => {
 
     render();
 };
+
+const getNewsByCategory = async (event) =>  {
+    const category = event.target.textContent.toLowerCase();
+    const url = new URL(`https://jina-news-times.netlify.app/top-headlines?country=kr&category=${category}`);
+    // api key는 맨 마지막에 넣기 - 조건문들의 순서 규칙?
+    // const url = new URL(`https://newsapi.org/v2/top-headlines?country=kr&category=${category}&apiKey=${API_KEY}`);
+
+    const response = await fetch(url);
+    const data = await response.json();
+    console.log("ddd", data);
+
+    newsList = data.articles;
+    render();
+}
+
+//키워드 검색
+const getNewsByKeyword = async() => {
+    const keyword = document.getElementById("search-input").value;
+
+    const url = new URL(`https://jina-news-times.netlify.app/top-headlines?q=${keyword}&country=kr`);
+    // const url = new URL(`https://newsapi.org/v2/top-headlines?country=kr&category=${category}&apiKey=${API_KEY}`);
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    newsList = data.articles;
+    render();
+}
 
 
 //뉴스 촤라락 보여주기
@@ -92,5 +125,27 @@ const imageError = (imageUrl) => {
     }
 }
 
+const openNav = () => {
+    document.getElementById("mySidenav").style.width = "250px";
+  };
+  
+  const closeNav = () => {
+    document.getElementById("mySidenav").style.width = "0";
+  };
+
+const openSearchBox = () => {
+    let inputArea = document.getElementById("input-area");
+    if (inputArea.style.display === "inline") {
+        inputArea.style.display = "none";
+    } else {
+        inputArea.style.display = "inline";
+    }
+}
+
 //news api 가져오기
 getNews();
+
+
+//1. 버튼에 클릭이벤트
+//2. 카테고리별 뉴스 가져오기
+//3. 뉴스 보여주기

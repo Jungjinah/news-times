@@ -13,6 +13,29 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <div class="side-menu" id="mySidenav">
+      <button class="closebtn" onclick="closeNav()">&times;</button>
+      <div class="side-menu-list" id="menu-list">
+        <button>Sport</button>
+        <button>Tech</button>
+        <button>World</button>
+        <button>Finance</button>
+        <button>Politics</button>
+        <button>Business</button>
+        <button>Economics</button>
+        <button>Entertainment</button>
+        <button>Beauty</button>
+        <button>Travel</button>
+        <button>Music</button>
+        <button>Food</button>
+        <button>Science</button>
+        <button>Gaming</button>
+        <button>Energy</button>
+      </div>
+    </div>
+
+    <i class="fas fa-bars hide icon-buttion" onclick="openNav()"></i>
+
     <section class="container">
       <section>
         <div class="headline">
@@ -22,22 +45,18 @@
             ></path>
           </svg>
         </div>
+        <div class="keyword-area">
+          <input type="text" id="search-input" placeholder="search"/>
+          <button onclick="getNewsByKeyword()">Go</button>
+        </div>
         <div class="menus">
-            <button>Sport</button>
-            <button>Tech</button>
-            <button>World</button>
-            <button>Finance</button>
-            <button>Politics</button>
             <button>Business</button>
-            <button>Economics</button>
             <button>Entertainment</button>
-            <button>Beauty</button>
-            <button>Travel</button>
-            <button>Music</button>
-            <button>Food</button>
+            <button>General</button>
+            <button>Health</button>
             <button>Science</button>
-            <button>Gaming</button>
-            <button>Energy</button>
+            <button>Sports</button>
+            <button>Technology</button>
         </div>
       </section>
       <section id="news-board"> <!-- 1.반복되는 구문을 감싸고 있는 부분이 news-board -->
