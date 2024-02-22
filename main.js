@@ -8,7 +8,7 @@ const API_KEY = "f3f9f252f54844c1bbf11778f355b084";
 
 //My Code
 /*
-async function getNews() {
+async function getLatesNews() {
     const url = new URL(`https://newsapi.org/v2/top-headlines?country=kr&apiKey=${API_KEY}`);
     //URL을 사용하면서 필요한 함수를 수작업으로 하는 것이 아니라 JS에서 만듬 (URL : 인스턴스)
     // => URL 에 필요한 함수와 변수들을 제공함
@@ -24,7 +24,7 @@ async function getNews() {
     render();
 };
 
-getNews();
+getLatesNews();
 for (let i=0; i < 20; i++) {
     console.log("after", i);
 }
@@ -38,36 +38,36 @@ let newsList = [];
 const menus = document.querySelectorAll(".menus button");
 menus.forEach(menu => menu.addEventListener("click", (event) => getNewsByCategory(event)))
 
+let url = new URL(`https://jina-news-times.netlify.app/top-headlines?country=kr`);
+// let url = new URL(`https://newsapi.org/v2/top-headlines?country=kr&apiKey=${API_KEY}`);
 
-const getNews = async() => {
+const getNews = async () => {
+    const response = await fetch(url);
+    const data = await response.json();   //json : 파일형식 (객체처럼 생긴 텍스트) ex)이미지 : jpeg,jpg ...
+    newsList = data.articles;
+    render();
+}
+
+const getLatesNews = async() => {
     // noona newsAPI (API KEY X)
     let q = "";
     let page = 1;
     let pageSize = 20;
     let category = "technology";
-    const url = new URL(`https://jina-news-times.netlify.app/top-headlines?country=kr`);
-    // const url = new URL(`https://newsapi.org/v2/top-headlines?country=kr&apiKey=${API_KEY}`);
-    const response = await fetch(url);
-    const data = await response.json();   //json : 파일형식 (객체처럼 생긴 텍스트) ex)이미지 : jpeg,jpg ...
-    newsList = data.articles;
     
-    console.log("Ddd", newsList);
-
-    render();
+    url = new URL(`https://jina-news-times.netlify.app/top-headlines?country=kr`);
+    // url = new URL(`https://newsapi.org/v2/top-headlines?country=kr&apiKey=${API_KEY}`);
+    
+    getNews();
 };
 
 const getNewsByCategory = async (event) =>  {
     const category = event.target.textContent.toLowerCase();
-    const url = new URL(`https://jina-news-times.netlify.app/top-headlines?country=kr&category=${category}`);
+    url = new URL(`https://jina-news-times.netlify.app/top-headlines?country=kr&category=${category}`);
     // api key는 맨 마지막에 넣기 - 조건문들의 순서 규칙?
-    // const url = new URL(`https://newsapi.org/v2/top-headlines?country=kr&category=${category}&apiKey=${API_KEY}`);
+    // url = new URL(`https://newsapi.org/v2/top-headlines?country=kr&category=${category}&apiKey=${API_KEY}`);
 
-    const response = await fetch(url);
-    const data = await response.json();
-    console.log("ddd", data);
-
-    newsList = data.articles;
-    render();
+    getNews();
 }
 
 //뉴스 촤라락 보여주기
@@ -134,15 +134,11 @@ const openSearchBox = () => {
 const getNewsByKeyword = async() => {
     const keyword = document.getElementById("search-input").value;
 
-    const url = new URL(`https://jina-news-times.netlify.app/top-headlines?q=${keyword}&country=kr`);
-    // const url = new URL(`https://newsapi.org/v2/top-headlines?country=kr&category=${category}&apiKey=${API_KEY}`);
+    url = new URL(`https://jina-news-times.netlify.app/top-headlines?q=${keyword}&country=kr`);
+    // url = new URL(`https://newsapi.org/v2/top-headlines?country=kr&category=${category}&apiKey=${API_KEY}`);
 
-    const response = await fetch(url);
-    const data = await response.json();
-
-    newsList = data.articles;
-    render();
+    getNews();
 }
 
 //news api 가져오기
-getNews();
+getLatesNews();
