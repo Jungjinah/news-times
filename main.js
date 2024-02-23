@@ -42,10 +42,22 @@ let url = new URL(`https://jina-news-times.netlify.app/top-headlines?country=kr`
 // let url = new URL(`https://newsapi.org/v2/top-headlines?country=kr&apiKey=${API_KEY}`);
 
 const getNews = async () => {
-    const response = await fetch(url);
-    const data = await response.json();   //json : 파일형식 (객체처럼 생긴 텍스트) ex)이미지 : jpeg,jpg ...
-    newsList = data.articles;
-    render();
+    try {
+        const response = await fetch(url);
+        const data = await response.json();   //json : 파일형식 (객체처럼 생긴 텍스트) ex)이미지 : jpeg,jpg ...
+        if(response.status === 200) {
+            if(data.articles.length === 0) {
+                throw new Error("No result for this search");
+            }
+            newsList = data.articles;
+            render();
+        } else {
+            throw new Error(data.message);
+        }
+        
+    } catch (error) {
+        errorRender(error.message);
+    }
 }
 
 const getLatesNews = async() => {
@@ -97,6 +109,15 @@ const render = () => {
     </div>`
     ).join("");
     document.getElementById("news-board").innerHTML = newsHTML; //1. 반복해서 나오는 구문을 감싸고 있는 main-board를 갖고온다.
+}
+
+const errorRender = (errorMessage) => {
+    const errorHTML = `<div class="alert alert-danger" role="alert">
+    ${errorMessage}
+    </div>`;
+
+    document.getElementById("news-board").innerHTML = errorHTML;
+
 }
 
 const imageError = (imageUrl) => {
