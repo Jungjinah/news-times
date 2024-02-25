@@ -41,16 +41,27 @@ menus.forEach(menu => menu.addEventListener("click", (event) => getNewsByCategor
 let url = new URL(`https://jina-news-times.netlify.app/top-headlines?country=kr`);
 // let url = new URL(`https://newsapi.org/v2/top-headlines?country=kr&apiKey=${API_KEY}`);
 
+let totalResults = 0;
+let page = 1;
+const pageSize = 10;
+const groupSize = 5;
+
 const getNews = async () => {
     try {
+        url.searchParams.set("page", page); // => &page=page 뜻
+        url.searchParams.set("pageSize", pageSize);
+
         const response = await fetch(url);
+
         const data = await response.json();   //json : 파일형식 (객체처럼 생긴 텍스트) ex)이미지 : jpeg,jpg ...
         if(response.status === 200) {
             if(data.articles.length === 0) {
                 throw new Error("No result for this search");
             }
             newsList = data.articles;
+            totalResults = data.totalResults;
             render();
+            paginationRender();
         } else {
             throw new Error(data.message);
         }
@@ -161,5 +172,79 @@ const getNewsByKeyword = async() => {
     getNews();
 }
 
+//pagination 그려주기
+const paginationRender = () => {
+    //totalResults(API), 
+    //page, 
+    //pageSize, 
+    //groupSize, 
+    
+    //totalPages
+    const totalPages = Math.ceil(totalResults/pageSize)
+    //pageGroup, 
+    const pageGroup = Math.ceil(page/groupSize);
+    //lastPage, 
+    let lastPage = pageGroup * groupSize;
+    // -> 마지막 페이지 그룹이 그룹 사이즈보다 작다면 ? lastPage = totalPages
+    if(lastPage > totalPages) {
+        lastPage = totalPages;
+    }
+
+    //firstPage
+    const firstPage = lastPage - (groupSize -1) <=0? 1: lastPage - (groupSize -1);
+
+    let paginationHTML = ``
+    if(page != firstPage) {
+        paginationHTML = `<li class="page-item" onclick="moveToPage(${firstPage})"><a class="page-link" href="#">&lt&lt</a></li>`
+        paginationHTML += `<li class="page-item" onclick="moveToPage(${page-1})"><a class="page-link" href="#">&lt</a></li>`
+    }
+    
+    for (let i = firstPage; i <= lastPage; i++){
+        paginationHTML += `<li class="page-item ${i===page?"active":""}" onclick="moveToPage(${i})"><a class="page-link">${i}</a></li>`
+    }
+    
+    if(page != lastPage) {
+        paginationHTML += `<li class="page-item" onclick="moveToPage(${page+1})"><a class="page-link" href="#">&gt</a></li>`
+        paginationHTML += `<li class="page-item" onclick="moveToPage(${lastPage})"><a class="page-link" href="#">&gt&gt</a></li>`
+    }
+    
+    let last = pageGroup * 5;
+    if(last > totalPages) {
+        last = totalPages;
+    }
+    let first = last - 4 <=0 ? 1 : last - 4;
+
+    document.querySelector(".pagination").innerHTML=paginationHTML
+    
+    // <nav aria-label="Page navigation example">
+    //     <ul class="pagination">
+    //         <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+    //         <li class="page-item"><a class="page-link" href="#">1</a></li>
+    //         <li class="page-item"><a class="page-link" href="#">2</a></li>
+    //         <li class="page-item"><a class="page-link" href="#">3</a></li>
+    //         <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    //     </ul>
+    // </nav>
+};
+
+//이동페이지
+const moveToPage = (pageNum) => {
+    console.log(pageNum);
+    page = pageNum;
+    getNews();
+}
+
+
 //news api 가져오기
 getLatesNews();
+
+
+//pagination
+// totalResults(주어짐)
+// pageSize - 한번에 몇 개의 페이지를 갖고오는지(default : 20), page (정함)
+// groupSize(정함, 한번에 몇 개의 페이지를 보여줄지)
+// totalPages = Math.ceil(totalResults/pageSize) - 올림
+// pageGroup = Math.ceil(page/groupSize)
+// 마지막페이지 = pageGroup * groupSize
+// 첫번째페이지 = 마지막페이지 - (groupSize -1)
+// 첫번째~마지막 render 해야함
